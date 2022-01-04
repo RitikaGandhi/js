@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+<style type="text/css">
+.title{
+	text-align: center;
+	margin: center;
+	position: absolute;
+}
+ul li{
+ cursor: pointer;
+  position: relative;
+  padding: 12px 8px 12px 40px;
+  list-style-type: none;
+  background: #eee;
+  font-size: 18px;
+  transition: 0.2s;
+  margin: 5px;
+}
+ul li:hover{
+	background: yellow;
+}
+.remove{
+position: absolute;
+  right: 0;
+  top: 0;
+  padding: 12px 16px 12px 16px;
+  text-decoration: none;
+  color: red;
+}
+.remove:hover{
+
+}
+</style>
+</head>
+<body>
+	<h2>My Todo List</h2>
+	<input type="text" id="name" placeholder="Text Here...">
+	<button onclick="addMore()" value="Add">ADD</button>
+	<span id="error"></span>
+	<ul id=box>
+		
+	</ul>
+</body>
+<script type="text/javascript">
+function addMore()
+{
+
+		let name = document.getElementById("name").value;
+		if(name == '')
+		{
+			document.getElementById('error').innerHTML = "please enter name";
+		}
+		else
+		{
+			let new_ul = document.getElementById("box");
+
+			let new_li = document.createElement("li");
+			new_li.textContent = name;
+
+
+			let a = document.createElement('a');
+			a.textContent = "X";
+			a.href = "javascipt:void(0)";
+			a.className = "remove";
+
+			new_li.appendChild(a);
+
+			new_ul.appendChild(new_li);
+			document.getElementById('name').value = '';
+		}
+}
+let btn = document.querySelector('ul');
+btn.addEventListener('click',function(e){
+	let new_ul = document.getElementById("box");
+	let new_li = e.target.parentNode;
+	new_ul.removeChild(new_li);
+});
+</script>
+</html>
