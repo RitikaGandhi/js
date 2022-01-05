@@ -1,9 +1,10 @@
 let id = "no";
 selectData();
-function manageData()
+function manageData1()
 {
 	let name = document.getElementById('name').value;
-	if(name == '')
+	let num = document.getElementById('num').value;
+	if(name == '' && num == '')
 	{
 		alert("Please Enter Name");
 	}
@@ -11,25 +12,20 @@ function manageData()
 	{
 		if(id == 'no') // add the data 
 		{
-			let arr = getData();
-			if(arr == null) // array is null
-			{
-				let data = [name];
+				let data = getData() || [];
+				data.push({name,num});
 				setData(data);
-			}
-			else //array is not null
-			{
-				arr.push(name);
-				setData(arr);
-			}
-			alert('Data inserted');
-			document.getElementById('name').value = '';
-			selectData();
+	
+				alert('Data inserted');
+				document.getElementById('name').value = '';
+				document.getElementById('num').value = '';
+				selectData();
 		}
 		else //edit data
 		{
 			let arr = getData();
-			arr[id] = name;
+			arr[id].name = name;
+			arr[id].num = num;
 			setData(arr);
 			alert("Data Updated")
 		}
@@ -37,11 +33,9 @@ function manageData()
 		selectData();
 		location.reload(true);
 	}
-
 }
-
 function selectData(){
-	let arr = getData();
+	let arr = JSON.parse(localStorage.getItem('data'));
 	if(arr != null){
 		let html = '';
 		let sno = 1;
@@ -50,7 +44,8 @@ function selectData(){
 			html = html + 
 			`<tr>
 				<td>${sno}</td>
-				<td>${arr[k]}</td>
+				<td>${arr[k].name}</td>
+				<td>${arr[k].num}</td>
 				<td>
 				<a href="javascript:void(0)" onClick="editData(${k})">Edit</a> ||
 				<a href="javascript:void(0)" onClick="deleteData(${k})">Delete</a> 
@@ -61,14 +56,14 @@ function selectData(){
 		document.getElementById("root").innerHTML = html;
 	}
 }
-
 function editData(id1){
 
 	id = id1
 	let arr = getData();
-	document.getElementById('name').value = arr[id1];
-}
+	document.getElementById('name').value = arr[id1].name;
+	document.getElementById('num').value = arr[id1].num;
 
+}
 function deleteData(id)
 {
 	if(confirm("Are you sure?"))
@@ -79,14 +74,12 @@ function deleteData(id)
 		selectData();
 	}
 }
-
 function getData()
 {
-	let arr = JSON.parse(localStorage.getItem('data1'));
+	let arr = JSON.parse(localStorage.getItem('data'));
 	return arr;
 }
-
-function setData(arr)
+function setData(data)
 {
-	localStorage.setItem('data1',JSON.stringify(arr));
+	localStorage.setItem('data',JSON.stringify(data));
 }
